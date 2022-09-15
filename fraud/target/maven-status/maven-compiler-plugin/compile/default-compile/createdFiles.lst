@@ -1,0 +1,7 @@
+com/blastza/fraud/FraudApplication.class
+com/blastza/fraud/FraudController.class
+com/blastza/fraud/FraudCheckService.class
+com/blastza/fraud/FraudCheckHistory.class
+com/blastza/fraud/FraudCheckHistory$FraudCheckHistoryBuilder.class
+com/blastza/fraud/FraudCheckHistoryRepository.class
+com/blastza/fraud/FraudCheckResponse.class
