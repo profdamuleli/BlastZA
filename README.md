@@ -7,3 +7,5 @@
  * PostgresQL
  * Docker
 # Quick Start
+* Make sure you have docker installed and Run:
+ * docker-compose up
