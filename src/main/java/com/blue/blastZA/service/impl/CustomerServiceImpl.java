@@ -17,16 +17,14 @@ public class CustomerServiceImpl implements CustomerService {
     @Transactional
     @Override
     public List<Customer> getCustomers() {
-        List<Customer> customerList = customerDao.get();
-        System.out.println("Debug : " + customerList);
+        List<Customer> customerList = customerDao.getAll();
         return customerList;
     }
 
     @Transactional
     @Override
     public Customer getCustomerById(int id){
-        Customer customer = customerDao.getCustomerById(id);
-        System.out.println("Debug : " + customer);
+        Customer customer = customerDao.get(id);
         return customer;
     }
 
@@ -38,8 +36,16 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Transactional
     @Override
-    public void createCustomerDetails(Customer customer){
-        customerDao.create(customer);
+    public void createCustomer(Customer customer){
+        customerDao.save(customer);
     }
 
+    @Transactional
+    @Override
+    public Customer updateCustomer(Customer customer){
+        if(customer.getCustomer_id() != 0){
+            customerDao.save(customer);
+        }
+        return customer;
+    }
 }

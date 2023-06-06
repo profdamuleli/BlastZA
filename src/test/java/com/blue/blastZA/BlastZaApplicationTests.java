@@ -1,13 +1,16 @@
 package com.blue.blastZA;
 
+import com.blue.blastZA.service.CustomerService;
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.beans.factory.annotation.Autowired;
 
-@SpringBootTest
-class BlastZaApplicationTests {
+public class BlastZaApplicationTests {
 
-	@Test
-	void contextLoads() {
-	}
+    @Autowired
+    public CustomerService customerService;
 
+    @Test
+    void getCustomerById() {
+
+    }
 }

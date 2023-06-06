@@ -6,11 +6,11 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 public interface CustomerDao {
-    public List<Customer> get();
+    public List<Customer> getAll();
 
-    public Customer getCustomerById(int id);
+    public Customer get(int id);
 
-    public void create(Customer customer);
+    public void save(Customer customer);
 
     public void delete(int id);
 }

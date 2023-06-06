@@ -1,6 +1,7 @@
 package com.blue.blastZA.dao.impl;
 
 import com.blue.blastZA.dao.CustomerDao;
+import com.blue.blastZA.exception.CustomerServiceException;
 import com.blue.blastZA.model.Customer;
 import jakarta.persistence.EntityManager;
 import org.hibernate.Session;
@@ -17,31 +18,39 @@ public class CustomerDaoImpl implements CustomerDao {
     private EntityManager entityManager;
 
     @Override
-    public List<Customer> get() {
+    public List<Customer> getAll() {
         Session currentSession = entityManager.unwrap(Session.class);
         Query<Customer> query = currentSession.createQuery("from Customer", Customer.class);
         List<Customer> customers = query.getResultList();
         return customers;
     }
 
-    //TODO : write it well
     @Override
-    public Customer getCustomerById(int id){
-        Customer customer = this.get().get(id - 1);
+    public Customer get(int id){
+        Session currentSession = entityManager.unwrap(Session.class);
+        Customer customer = currentSession.get(Customer.class, id);
+        if(customer == null){
+            throw new CustomerServiceException("Customer with id : " + id + " was found");
+        }
         return customer;
     }
 
     @Override
-    public void create(Customer customer){
+    public void save(Customer customer){
         Session currentSession = entityManager.unwrap(Session.class);
-        currentSession.save(customer);
+        if(customer == null){
+            throw new CustomerServiceException("No customer to save");
+        }
+        currentSession.saveOrUpdate(customer);
     }
 
     @Override
     public void delete(int id){
         Session currentSession = entityManager.unwrap(Session.class);
-        Customer customer = this.get().get(id - 1);
-
+        Customer customer = currentSession.get(Customer.class, id);
+        if(customer == null){
+            throw new CustomerServiceException("Customer with id : " + id + " was found");
+        }
         currentSession.delete(customer);
     }
 

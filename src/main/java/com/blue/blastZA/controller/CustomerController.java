@@ -1,13 +1,12 @@
 package com.blue.blastZA.controller;
 
+import com.blue.blastZA.exception.CustomerServiceException;
 import com.blue.blastZA.model.Customer;
 import com.blue.blastZA.service.CustomerService;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.lang.Nullable;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -17,27 +16,37 @@ public class CustomerController {
     @Autowired
     private CustomerService customerService;
 
-    @GetMapping("/customer")
+    @GetMapping(value = "/customer", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<Customer> getCustomerDetails(){
         return customerService.getCustomers();
     }
 
-    @GetMapping("/customer/{customerId}")
+    @PostMapping(value = "/customer",
+            consumes = MediaType.APPLICATION_JSON_VALUE
+            ,produces = MediaType.APPLICATION_JSON_VALUE)
+    public void createCustomer(@RequestBody Customer customer){
+        if(customer == null){
+            throw new CustomerServiceException("No data to return from the database");
+        }
+        customerService.createCustomer(customer);
+    }
+
+    @GetMapping(value = "/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public Customer getCustomerDetailsById(@PathVariable(value = "customerId") int id){
         Customer customer = customerService.getCustomerById(id);
-        System.out.println(customer);
-        return  customer;
+        if(customer == null)
+            throw new CustomerServiceException("Customer with id : " + id + " was found");
+        return customer;
     }
 
-    @PostMapping("/customer")
-    public void createCustomer(@RequestBody Customer customer){
-        if(customer != null){
-            customerService.createCustomerDetails(customer);
-        }
+    @DeleteMapping(value = "/delete/customer/{customerId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public void deleteCustomerDetailsById(@PathVariable(value = "customerId") int id){
+        customerService.deleteById(id);
     }
 
-    @DeleteMapping("/delete/customer/{customerId}")
-    public void deleteCustomerDetailsById(@PathVariable(value = "customerId") int Id){
-        customerService.deleteById(Id);
+    @PutMapping("/customer")
+    public Customer updateCustomer(@RequestBody Customer customer){
+        customerService.updateCustomer(customer);
+        return customer;
     }
 }
