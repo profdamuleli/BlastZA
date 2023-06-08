@@ -1,6 +1,7 @@
 package com.blue.blastZA.service.impl;
 
 import com.blue.blastZA.dao.CustomerDao;
+import com.blue.blastZA.exception.CustomerServiceException;
 import com.blue.blastZA.model.Customer;
 import com.blue.blastZA.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public List<Customer> getCustomers() {
         List<Customer> customerList = customerDao.getAll();
+        if(customerList == null)
+            throw new CustomerServiceException("Customer table does not have any data");
         return customerList;
     }
 
@@ -25,6 +28,8 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer getCustomerById(int id){
         Customer customer = customerDao.get(id);
+        if(customer == null)
+            throw new CustomerServiceException("Customer with Id : " + id);
         return customer;
     }
 

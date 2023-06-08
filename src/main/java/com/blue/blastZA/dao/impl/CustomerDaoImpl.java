@@ -4,6 +4,8 @@ import com.blue.blastZA.dao.CustomerDao;
 import com.blue.blastZA.exception.CustomerServiceException;
 import com.blue.blastZA.model.Customer;
 import jakarta.persistence.EntityManager;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +23,7 @@ public class CustomerDaoImpl implements CustomerDao {
     public List<Customer> getAll() {
         Session currentSession = entityManager.unwrap(Session.class);
         Query<Customer> query = currentSession.createQuery("from Customer", Customer.class);
-        List<Customer> customers = query.getResultList();
-        return customers;
+        return query.getResultList();
     }
 
     @Override
@@ -41,17 +42,18 @@ public class CustomerDaoImpl implements CustomerDao {
         if(customer == null){
             throw new CustomerServiceException("No customer to save");
         }
-        currentSession.saveOrUpdate(customer);
+        currentSession.persist(customer);
     }
 
     @Override
     public void delete(int id){
         Session currentSession = entityManager.unwrap(Session.class);
         Customer customer = currentSession.get(Customer.class, id);
-        if(customer == null){
+        if(customer == null) {
             throw new CustomerServiceException("Customer with id : " + id + " was found");
+        }else {
+            currentSession.delete(customer);
         }
-        currentSession.delete(customer);
     }
 
 }
