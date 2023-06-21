@@ -11,26 +11,22 @@ import java.util.Date;
 @Setter
 @ToString
 @Entity
-@Table(name = "customers")
-public class Customer {
+@Table(name = "orders")
+public class Order {
+    @Column
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int order_id;
     @Column
     private int customer_id;
     @Column
-    private String first_name;
+    private Date order_date;
     @Column
-    private String last_name;
+    private int status;
     @Column
-    private Date birth_date;
+    private String comments;
     @Column
-    private String phone;
+    private Date shipped_date;
     @Column
-    private String address;
-    @Column
-    private String city;
-    @Column
-    private String state;
-    @Column
-    private int points;
+    private int shipper_id;
 }

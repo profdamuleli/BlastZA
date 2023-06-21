@@ -4,8 +4,6 @@ import com.blue.blastZA.dao.CustomerDao;
 import com.blue.blastZA.exception.CustomerServiceException;
 import com.blue.blastZA.model.Customer;
 import jakarta.persistence.EntityManager;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.hibernate.Session;
 import org.hibernate.query.Query;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,31 +25,43 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public Customer get(int id){
+    public Customer get(int id) {
         Session currentSession = entityManager.unwrap(Session.class);
         Customer customer = currentSession.get(Customer.class, id);
-        if(customer == null){
+        if (customer == null) {
             throw new CustomerServiceException("Customer with id : " + id + " was found");
         }
         return customer;
     }
 
     @Override
-    public void save(Customer customer){
+    public void save(Customer customer) {
         Session currentSession = entityManager.unwrap(Session.class);
-        if(customer == null){
+        if (customer == null) {
             throw new CustomerServiceException("No customer to save");
         }
         currentSession.persist(customer);
     }
 
     @Override
-    public void delete(int id){
+    public void saveList(List<Customer> customer) {
+        Session currentSession = entityManager.unwrap(Session.class);
+        if (customer == null) {
+            throw new CustomerServiceException("No customer to save");
+        }
+        customer.listIterator();
+        for (Customer obj : customer) {
+            currentSession.persist(obj);
+        }
+    }
+
+    @Override
+    public void delete(int id) {
         Session currentSession = entityManager.unwrap(Session.class);
         Customer customer = currentSession.get(Customer.class, id);
-        if(customer == null) {
+        if (customer == null) {
             throw new CustomerServiceException("Customer with id : " + id + " was found");
-        }else {
+        } else {
             currentSession.delete(customer);
         }
     }

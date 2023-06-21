@@ -14,10 +14,10 @@ import java.util.Date;
 public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {Exception.class})
-    public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request){
+    public ResponseEntity<Object> handleAnyException(Exception ex, WebRequest request) {
 
         String errorMessageDescription = ex.getLocalizedMessage();
-        if(errorMessageDescription == null)
+        if (errorMessageDescription == null)
             errorMessageDescription = ex.toString();
         ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
 
@@ -29,10 +29,10 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = {NullPointerException.class, CustomerServiceException.class})
-    public ResponseEntity<Object> handleNullSpecificException(Exception ex, WebRequest request){
+    public ResponseEntity<Object> handleNullSpecificException(Exception ex, WebRequest request) {
 
         String errorMessageDescription = ex.getLocalizedMessage();
-        if(errorMessageDescription == null)
+        if (errorMessageDescription == null)
             errorMessageDescription = ex.toString();
         ErrorMessage errorMessage = new ErrorMessage(new Date(), errorMessageDescription);
 
